@@ -27,6 +27,28 @@ const ReservationModal: React.FC<ReservationModalProps> = ({
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     onConfirm(selectedBlock, selectedSpot);
+    fetch('http://localhost:3000/api/make_reservation', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        id_garagem: selectedBlock, 
+        id_vaga: selectedSpot    
+      }),
+    })
+    .then(response => {
+      if (!response.ok) {
+        throw new Error(`Erro na requisição: ${response.status}`);
+      }
+      return response.text();
+    })
+    .then(data => {
+      console.log('Reserva feita com sucesso:', data);
+    })
+    .catch(error => {
+      console.error('Erro ao fazer a reserva:', error);
+    });
   };
 
   if (!isOpen) return null;
