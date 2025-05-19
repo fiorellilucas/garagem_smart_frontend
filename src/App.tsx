@@ -1,37 +1,8 @@
-import { useEffect, useState } from 'react';
 import { Car, MapPin, User, Settings } from 'lucide-react';
-import ReservationCard, { ReservationCardProps } from './components/ReservationCard';
-import AddressSearch from './components/AddressSearch';
+
+import { Outlet } from 'react-router';
 
 function App() {
-  const [selectedPlace, setSelectedPlace] = useState('');
-  const [reservationCardData, setReservationCardData] = useState<ReservationCardProps[]>([]);
-  
-  const handleAddressSelect = (address: string) => {
-    setSelectedPlace(address);
-  };
-
-  useEffect(() => {
-    fetch('http://localhost:3000/api/reservation_card')
-    .then(res => res.json())
-    .then(json => setReservationCardData(json))
-  }, [])
-
-  let ReservationCardsArray = []
-
-  for (let idx in reservationCardData) {
-    ReservationCardsArray.push(
-    <ReservationCard
-      key={reservationCardData[idx]["key"]}
-      idEstabelecimento={reservationCardData[idx]["key"]}
-      endereco={reservationCardData[idx]["endereco"]} 
-      nomeEstabelecimento={reservationCardData[idx]["nome_estabelecimento"]}
-      vagasDisponiveis={reservationCardData[idx]["vagas_disponiveis"]}
-      valorEstacionamento={reservationCardData[idx]["valor_estacionamento"]}
-      />
-    )
-  }
-
   return (
     <div className="min-h-screen bg-gray-50">
 
@@ -61,48 +32,7 @@ function App() {
 
       {/* Main Content */}
       <main className="container mx-auto p-4">
-        {/* Search Section */}
-        <section className="mb-8">
-          <div className="bg-white p-6 rounded-lg shadow-md">
-            <h2 className="text-2xl font-semibold mb-4">Encontre vagas próximas</h2>
-            <div className="flex flex-col md:flex-row gap-4">
-              <AddressSearch onAddressSelect={handleAddressSelect} />
-              <button className="bg-blue-600 text-white px-6 py-3 rounded-md hover:bg-blue-700 transition-colors">
-                Buscar Vagas
-              </button>
-            </div>
-          </div>
-        </section>
-
-        {/* Features Grid */}
-        <section className="grid md:grid-cols-3 gap-6 mb-8">
-          <div className="bg-white p-6 rounded-lg shadow-md">
-            <h3 className="text-xl font-semibold mb-3">Vagas Disponíveis</h3>
-            <p className="text-gray-600">
-              Encontre vagas em tempo real nos estabelecimentos próximos a você.
-            </p>
-          </div>
-          <div className="bg-white p-6 rounded-lg shadow-md">
-            <h3 className="text-xl font-semibold mb-3">Reserva Antecipada</h3>
-            <p className="text-gray-600">
-              Garanta sua vaga com antecedência e evite contratempos.
-            </p>
-          </div>
-          <div className="bg-white p-6 rounded-lg shadow-md">
-            <h3 className="text-xl font-semibold mb-3">Pagamento Digital</h3>
-            <p className="text-gray-600">
-              Pague de forma segura usando PIX ou cartão de crédito.
-            </p>
-          </div>
-        </section>
-
-        {/* Example Parking Section */}
-        <section className="bg-white p-6 rounded-lg shadow-md">
-          <h2 className="text-2xl font-semibold mb-4">Vagas em Destaque</h2>
-          <div className="grid md:grid-cols-2 gap-6">
-            {ReservationCardsArray}
-          </div>
-        </section>
+        <Outlet/>
       </main>
 
       {/* Footer */}

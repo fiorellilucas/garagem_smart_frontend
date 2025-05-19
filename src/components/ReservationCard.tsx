@@ -24,20 +24,10 @@ const ReservationCard: React.FC<ReservationCardProps> = ({
     setIsModalOpen(true);
   };
 
-  const handleReservationConfirm = (block: string, spot: string) => {
+  const handleReservationConfirm = () => {
     setIsModalOpen(false);
     setShowSuccessMessage(true);
     setTimeout(() => setShowSuccessMessage(false), 3000);
-    fetch("http://localhost:3000/api/make_reservation", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({
-        "id_garagem": block,
-        "id_vaga": spot
-      })
-    })
   };
 
   return (

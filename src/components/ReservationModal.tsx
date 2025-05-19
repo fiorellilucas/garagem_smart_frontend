@@ -5,7 +5,7 @@ interface ReservationModalProps {
   isOpen: boolean;
   onClose: () => void;
   idEstabelecimento: number;
-  onConfirm: (block: string, spot: string) => void;
+  onConfirm: () => void;
 }
 
 const ReservationModal: React.FC<ReservationModalProps> = ({
@@ -26,7 +26,7 @@ const ReservationModal: React.FC<ReservationModalProps> = ({
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    onConfirm(selectedBlock, selectedSpot);
+    onConfirm();
     fetch('http://localhost:3000/api/make_reservation', {
       method: 'POST',
       headers: {
