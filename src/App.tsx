@@ -1,8 +1,10 @@
 import { Car, MapPin, User, Settings } from 'lucide-react';
-
+import { useState } from 'react';
 import { Outlet } from 'react-router';
 
 function App() {
+  const [selectedPlace, setSelectedPlace] = useState(0);
+
   return (
     <div className="min-h-screen bg-gray-50">
 
@@ -32,7 +34,7 @@ function App() {
 
       {/* Main Content */}
       <main className="container mx-auto p-4">
-        <Outlet/>
+        <Outlet context={{ selectedPlace, setSelectedPlace }} />
       </main>
 
       {/* Footer */}

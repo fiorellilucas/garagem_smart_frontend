@@ -2,14 +2,14 @@ import React, { useState, useEffect, useRef } from 'react';
 import { Search } from 'lucide-react';
 
 interface AddressSearchProps {
-  onAddressSelect: (address: string) => void
+  onAddressSelect: (idEstabelecimento: number) => void;
 }
 
 const AddressSearch: React.FC<AddressSearchProps> = ({ onAddressSelect }) => {
   const [searchTerm, setSearchTerm] = useState('');
-  const [suggestions, setSuggestions] = useState<string[]>([]);
+  const [suggestions, setSuggestions] = useState<{ nome: string, idEstabelecimento: number }[]>([]);
   const [isOpen, setIsOpen] = useState(false);
-  const [addresses, setAddresses] = useState(['']);
+  const [addresses, setAddresses] = useState<{ nome: string, idEstabelecimento: number }[]>([]);
   const wrapperRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -27,19 +27,19 @@ const AddressSearch: React.FC<AddressSearchProps> = ({ onAddressSelect }) => {
     fetch('http://localhost:3000/api/estabelecimentos')
       .then(res => res.json())
       .then(json => {
-        let address_array: string[] = []
-        for (let idx in json) {
-          address_array.push(`${json[idx]["nome_estabelecimento"]} - ${json[idx]["cidade"]}/${json[idx]["estado"]}`)
-        }
-        setAddresses(address_array)
-      })
-  }, [])
+        const address_array = json.map((item: any) => ({
+          nome: `${item["nome_estabelecimento"]} - ${item["cidade"]}/${item["estado"]}`,
+          idEstabelecimento: item["id"]
+        }));
+        setAddresses(address_array);
+      });
+  }, []);
 
   const handleSearch = (value: string) => {
     setSearchTerm(value);
     if (value.length > 2) {
       const filtered = addresses.filter(address =>
-        address.toLowerCase().includes(value.toLowerCase())
+        address.nome.toLowerCase().includes(value.toLowerCase())
       );
       setSuggestions(filtered);
       setIsOpen(true);
@@ -49,9 +49,9 @@ const AddressSearch: React.FC<AddressSearchProps> = ({ onAddressSelect }) => {
     }
   };
 
-  const handleSelect = (address: string) => {
-    setSearchTerm(address);
-    onAddressSelect(address);
+  const handleSelect = (address: { nome: string; idEstabelecimento: number }) => {
+    setSearchTerm(address.nome);
+    onAddressSelect(address.idEstabelecimento);
     setIsOpen(false);
   };
 
@@ -69,14 +69,14 @@ const AddressSearch: React.FC<AddressSearchProps> = ({ onAddressSelect }) => {
       </div>
 
       {isOpen && suggestions.length > 0 && (
-        <div className="absolute z-10 w-full mt-1 bg-white border border-gray-300 rounded-md shadow-lg">
-          {suggestions.map((suggestion, index) => (
+        <div className="absolute z-10 w-full mt-1 bg-white border border-gray-300 rounded-md shadow-lg max-h-60 overflow-y-auto">
+          {suggestions.map((suggestion) => (
             <button
-              key={index}
+              key={suggestion.idEstabelecimento}
               onClick={() => handleSelect(suggestion)}
               className="w-full px-4 py-2 text-left hover:bg-gray-100 focus:outline-none focus:bg-gray-100"
             >
-              {suggestion}
+              {suggestion.nome}
             </button>
           ))}
         </div>

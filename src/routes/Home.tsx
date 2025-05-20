@@ -1,13 +1,14 @@
+import { useOutletContext } from 'react-router';
 import AddressSearch from '../components/AddressSearch';
 import ReservationCard, { ReservationCardProps } from '../components/ReservationCard';
 import { useEffect, useState } from 'react';
 
 function Home() {
-  const [selectedPlace, setSelectedPlace] = useState('');
   const [reservationCardData, setReservationCardData] = useState<ReservationCardProps[]>([]);
+  const { selectedPlace, setSelectedPlace } = useOutletContext<any>();
 
-  const handleAddressSelect = (address: string) => {
-    setSelectedPlace(address);
+  const handleAddressSelect = (idEstabelecimento: number) => {
+    setSelectedPlace(idEstabelecimento);
   };
 
   useEffect(() => {
@@ -37,7 +38,7 @@ function Home() {
           <h2 className="text-2xl font-semibold mb-4">Encontre vagas próximas</h2>
           <div className="flex flex-col md:flex-row gap-4">
             <AddressSearch onAddressSelect={handleAddressSelect} />
-            <button className="bg-blue-600 text-white px-6 py-3 rounded-md hover:bg-blue-700 transition-colors">
+            <button onClick={() => console.log(selectedPlace)} className="bg-blue-600 text-white px-6 py-3 rounded-md hover:bg-blue-700 transition-colors">
               Buscar Vagas
             </button>
           </div>
