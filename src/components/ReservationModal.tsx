@@ -8,6 +8,23 @@ interface ReservationModalProps {
   onConfirm: () => void;
 }
 
+interface Vaga {
+  id: number;
+  numero_vaga: string;
+  status: string;
+}
+
+interface Garagem {
+  id: number;
+  nome_garagem: string;
+  vagas: Vaga[];
+}
+
+interface ReservationData {
+  nome_estabelecimento: string;
+  garagens: Garagem[];
+}
+
 const ReservationModal: React.FC<ReservationModalProps> = ({
   isOpen,
   onClose,
@@ -16,13 +33,16 @@ const ReservationModal: React.FC<ReservationModalProps> = ({
 }) => {
   const [selectedBlock, setSelectedBlock] = React.useState('');
   const [selectedSpot, setSelectedSpot] = React.useState('');
-  const [reservationModalData, setReservationModalData] = React.useState('');
+  const [reservationModalData, setReservationModalData] = React.useState<ReservationData | null>(null);
 
   useEffect(() => {
+    if (idEstabelecimento === 0) return
+
+    console.log(idEstabelecimento)
     fetch(`http://localhost:3000/api/reservation_modal?id=${idEstabelecimento}`)
-    .then(res => res.json())
-    .then(json => setReservationModalData(json))
-  }, [])
+      .then(res => res.json())
+      .then(json => setReservationModalData(json))
+  }, [idEstabelecimento])
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -33,25 +53,25 @@ const ReservationModal: React.FC<ReservationModalProps> = ({
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        id_garagem: selectedBlock, 
-        id_vaga: selectedSpot    
+        id_garagem: selectedBlock,
+        id_vaga: selectedSpot
       }),
     })
-    .then(response => {
-      if (!response.ok) {
-        throw new Error(`Erro na requisição: ${response.status}`);
-      }
-      return response.text();
-    })
-    .then(data => {
-      console.log('Reserva feita com sucesso:', data);
-    })
-    .catch(error => {
-      console.error('Erro ao fazer a reserva:', error);
-    });
+      .then(response => {
+        if (!response.ok) {
+          throw new Error(`Erro na requisição: ${response.status}`);
+        }
+        return response.text();
+      })
+      .then(data => {
+        console.log('Reserva feita com sucesso:', data);
+      })
+      .catch(error => {
+        console.error('Erro ao fazer a reserva:', error);
+      });
   };
 
-  if (!isOpen) return null;
+  if (!isOpen || !reservationModalData) return null
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
@@ -79,9 +99,11 @@ const ReservationModal: React.FC<ReservationModalProps> = ({
               required
             >
               <option value="">Selecione...</option>
-              {reservationModalData["garagens"].map(garagem => {
-                return <option key={garagem["id"]} value={garagem["id"]}>{garagem["nome_garagem"]}</option>
-              })}
+              {reservationModalData?.garagens?.map(garagem => (
+                <option key={garagem.id} value={garagem.id}>
+                  {garagem.nome_garagem}
+                </option>
+              ))}
             </select>
           </div>
           <div className="mb-6">
