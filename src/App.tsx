@@ -22,7 +22,7 @@ function App() {
             </button>
             <button className="flex items-center space-x-2 hover:text-blue-200">
               <User className="w-5 h-5" />
-              <span>Minha Conta</span>
+              <span>Minhas Reservas</span>
             </button>
             <button className="flex items-center space-x-2 hover:text-blue-200">
               <Settings className="w-5 h-5" />
