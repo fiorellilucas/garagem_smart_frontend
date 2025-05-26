@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from 'react-router';
 
 export default function Register() {
   const [form, setForm] = useState({
@@ -11,6 +12,8 @@ export default function Register() {
     dt_nascimento: "",
     telefone: "",
   });
+
+  const navigate = useNavigate();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -28,9 +31,14 @@ export default function Register() {
     const data = await res.json();
     if (res.ok) {
       alert("Cadastro realizado!");
+      navigate("/");  // Opcional: redirecionar após cadastro
     } else {
       alert(`Erro: ${data.erro || "Falha no cadastro"}`);
     }
+  };
+
+  const handleVoltar = () => {
+    navigate("/login");
   };
 
   return (
@@ -52,6 +60,13 @@ export default function Register() {
           ))}
           <button type="submit" className="w-full bg-blue-600 text-white py-2 rounded-md hover:bg-blue-700">
             Cadastrar
+          </button>
+          <button
+            type="button"
+            onClick={handleVoltar}
+            className="w-full bg-gray-300 text-gray-700 py-2 rounded-md hover:bg-gray-400"
+          >
+            Voltar para Login
           </button>
         </div>
       </form>

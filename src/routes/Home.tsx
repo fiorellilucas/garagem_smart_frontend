@@ -89,7 +89,6 @@ function Home() {
         </div>
       </section>
 
-      {/* Reservation Modal */}
       <ReservationModal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
@@ -97,7 +96,6 @@ function Home() {
         onConfirm={handleReservationConfirm}
       />
 
-      {/* Success Message */}
       {showSuccessMessage && (
         <div className="fixed top-4 right-4 bg-green-500 text-white px-6 py-3 rounded-md shadow-lg z-50">
           Parabéns! Vaga reservada com sucesso!

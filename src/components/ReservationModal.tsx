@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { X } from 'lucide-react';
 
 interface ReservationModalProps {
@@ -35,6 +35,8 @@ const ReservationModal: React.FC<ReservationModalProps> = ({
   const [selectedSpot, setSelectedSpot] = React.useState('');
   const [reservationModalData, setReservationModalData] = React.useState<ReservationData | null>(null);
 
+  const usuarioId = Number(localStorage.getItem("usuarioId"));
+
   useEffect(() => {
     if (idEstabelecimento === 0) return
 
@@ -44,32 +46,36 @@ const ReservationModal: React.FC<ReservationModalProps> = ({
       .then(json => setReservationModalData(json))
   }, [idEstabelecimento])
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    onConfirm();
-    fetch('http://localhost:3000/api/make_reservation', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        id_garagem: selectedBlock,
-        id_vaga: selectedSpot
-      }),
+const handleSubmit = (e: React.FormEvent) => {
+  e.preventDefault();
+  onConfirm();
+
+  console.log(usuarioId)
+
+  fetch('http://localhost:3000/api/fazer-reserva', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      id_garagem: selectedBlock,
+      id_vaga: selectedSpot,
+      id_pessoa: usuarioId  
+    }),
+  })
+    .then(response => {
+      if (!response.ok) {
+        throw new Error(`Erro na requisição: ${response.status}`);
+      }
+      return response.text();
     })
-      .then(response => {
-        if (!response.ok) {
-          throw new Error(`Erro na requisição: ${response.status}`);
-        }
-        return response.text();
-      })
-      .then(data => {
-        console.log('Reserva feita com sucesso:', data);
-      })
-      .catch(error => {
-        console.error('Erro ao fazer a reserva:', error);
-      });
-  };
+    .then(data => {
+      console.log('Reserva feita com sucesso:', data);
+    })
+    .catch(error => {
+      console.error('Erro ao fazer a reserva:', error);
+    });
+};
 
   if (!isOpen || !reservationModalData) return null
 

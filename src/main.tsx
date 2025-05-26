@@ -8,6 +8,7 @@ import { Route } from 'react-router';
 import Login from './routes/Login.tsx';
 import Cadastro from './routes/Cadastro.tsx';
 import { PrivateRoute } from './routes/PrivateRoute.tsx';
+import MinhasReservas from './routes/MinhasReservas.tsx';
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
@@ -22,6 +23,7 @@ createRoot(document.getElementById('root')!).render(
           }
         >
           <Route index element={<Home />} />
+          <Route path="/minhas-reservas" element={<MinhasReservas />} />
         </Route>
       </Routes>
     </BrowserRouter>
