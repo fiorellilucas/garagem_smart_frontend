@@ -1,4 +1,6 @@
-import { Car, MapPin, User, LogOut } from 'lucide-react';
+// import { Car, MapPin, User, LogOut } from 'lucide-react'
+import { FaCarSide, FaMapPin, FaUser,  } from "react-icons/fa";
+import { RiLogoutBoxRLine } from "react-icons/ri";
 import { useState } from 'react';
 import { Outlet, useNavigate  } from 'react-router';
 
@@ -19,20 +21,20 @@ function App() {
       <header className="bg-blue-600 text-white p-4 shadow-lg">
         <div className="container mx-auto flex justify-between items-center">
           <div className="flex items-center space-x-2">
-            <Car className="w-8 h-8" />
+            <FaCarSide className="w-8 h-8" />
             <h1 className="text-2xl font-bold">Garagem Smart</h1>
           </div>
           <nav className="hidden md:flex space-x-6">
             <button onClick={() => navigate('/')} className="flex items-center space-x-2 hover:text-blue-200">
-              <MapPin className="w-5 h-5" />
+              <FaMapPin className="w-5 h-5" />
               <span>Encontrar Vagas</span>
             </button>
             <button onClick={() => navigate('/minhas-reservas')} className="flex items-center space-x-2 hover:text-blue-200">
-              <User className="w-5 h-5" />
+              <FaUser className="w-5 h-5" />
               <span>Minhas Reservas</span>
             </button>
             <button onClick={handleLogout} className="flex items-center space-x-2 hover:text-blue-200">
-              <LogOut className="w-5 h-5" />
+              <RiLogoutBoxRLine className="w-5 h-5" />
               <span>Sair</span>
             </button>
           </nav>

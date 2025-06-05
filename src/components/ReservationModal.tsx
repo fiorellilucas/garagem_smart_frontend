@@ -1,5 +1,5 @@
 import React, { useContext, useEffect } from 'react';
-import { X } from 'lucide-react';
+import { IoMdClose } from "react-icons/io";
 
 interface ReservationModalProps {
   isOpen: boolean;
@@ -88,7 +88,7 @@ const handleSubmit = (e: React.FormEvent) => {
             onClick={onClose}
             className="text-gray-500 hover:text-gray-700"
           >
-            <X className="w-6 h-6" />
+            <IoMdClose className="w-6 h-6" />
           </button>
         </div>
         <form onSubmit={handleSubmit}>

@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Search } from 'lucide-react';
+import { FiSearch } from "react-icons/fi";
 
 interface AddressSearchProps {
   onAddressSelect: (idEstabelecimento: number) => void;
@@ -65,7 +65,7 @@ const AddressSearch: React.FC<AddressSearchProps> = ({ onAddressSelect }) => {
           placeholder="Digite o nome do estabelecimento"
           className="w-full p-3 pl-10 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
         />
-        <Search className="absolute left-3 top-3.5 h-5 w-5 text-gray-400" />
+        <FiSearch className="absolute left-3 top-3.5 h-5 w-5 text-gray-400" />
       </div>
 
       {isOpen && suggestions.length > 0 && (
